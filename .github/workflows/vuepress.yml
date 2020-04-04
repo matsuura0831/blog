@@ -10,8 +10,14 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Copy package
+      run: cp ./package.json ./.yarnrc .github/actions/build
+
+    - name: Run a one-line script
+      run: ls .github/actions
+
     - name: Build
-      run: docker/
+      uses: ./.github/actions/build
 
     - name: Run a one-line script
       run: ls 
