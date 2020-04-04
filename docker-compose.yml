@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  www:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./package.json:/workspace/package.json"
+      - "./docs:/workspace/docs"
+      - "./build:/workspace/build"
