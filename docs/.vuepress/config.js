@@ -1,6 +1,10 @@
 module.exports = {
     title: 'besolab',
     description: 'A place to store technical knowledge for myself.',
+
+    plugins: [
+        require('./myplugin'),
+    ],
     locales: {
         '/': { lang: 'ja' },
     },
