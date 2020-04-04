@@ -1,6 +1,6 @@
 module.exports = {
     title: 'besolab',
-    descrpition: 'A place to store technical knowledge for myself.',
+    description: 'A place to store technical knowledge for myself.',
     locales: {
         '/': { lang: 'ja' },
     },
