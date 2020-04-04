@@ -9,3 +9,5 @@ ADD package.json /workspace/package.json
 RUN yarn install
 
 ADD docs /workspace/docs
+
+CMD ["yarn", "build"]
