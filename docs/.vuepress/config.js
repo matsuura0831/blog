@@ -1,4 +1,7 @@
 module.exports = {
+    base: '/',
+    dest: './build',
+
     title: 'besolab',
     description: 'A place to store technical knowledge for myself.',
     locales: {

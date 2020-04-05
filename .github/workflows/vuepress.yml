@@ -13,17 +13,8 @@ jobs:
     - name: Copy package
       run: cp ./package.json ./.yarnrc .github/actions/build
 
-    - name: Run a one-line script
-      run: ls .github/actions
-
     - name: Build
       uses: ./.github/actions/build
-
-    - name: Run a one-line script
-      run: ls 
-      
-    - name: Run a one-line script
-      run: ls docs/.vuepress
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v2
@@ -31,4 +22,4 @@ jobs:
         ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
         EXTERNAL_REPOSITORY: matsuura0831/matsuura0831.github.io
         PUBLISH_BRANCH: master
-        PUBLISH_DIR: ./docs/.vuepress/dist
+        PUBLISH_DIR: ./build
