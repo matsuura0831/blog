@@ -10,3 +10,4 @@ services:
       - "9229:9229"
     volumes:
       - ".:/workspace"
+    command: yarn dev
