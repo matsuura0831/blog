@@ -1,3 +1,9 @@
 # Home
 
-Hello World!
+::: warning
+サイトの見栄えを改良中
+:::
+
+## Posts
+
+<Posts />
