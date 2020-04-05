@@ -1,1 +1,5 @@
 # About
+
+## Posts
+
+<Posts />

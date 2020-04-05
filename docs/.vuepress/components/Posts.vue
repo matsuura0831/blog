@@ -1,8 +1,8 @@
 <template>
   <div>
     <ul>
-      <li v-for="post of posts('/posts/')" :key="post.key">
-        <a :href="post.path">{{ post.frontmatter.date }}, {{ post.title }}</a></li>
+      <li v-for="p of posts" :key="p.key">
+        <a :href="p.path">{{ p.title }}, {{ p.path }}</a></li>
     </ul>
   </div>
 </template>
@@ -11,9 +11,7 @@
 export default {
     computed: {
         posts: function() {
-            return (base) => {
-              return this.$site.pages.filter(v => v.path.startsWith(base));
-            }
+            return this.$site.pages;
         }
     }
 };

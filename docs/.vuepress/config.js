@@ -2,6 +2,35 @@ module.exports = {
     base: '/',
     dest: './build',
 
+    plugins: [
+        ['@vuepress/blog', {
+            directories: [
+                {
+                    // Unique ID of current classification
+                    id: 'post',
+                    // Target directory
+                    dirname: '_posts',
+                    // Path of the `entry page` (or `list page`)
+                    path: '/',
+                },
+            ],
+            frontmatters: [
+                {
+                    // Unique ID of current classification
+                    id: 'tag',
+                    // Decide that the frontmatter keys will be grouped under this classification
+                    keys: ['tags'],
+                    // Path of the `entry page` (or `list page`)
+                    path: '/tag/',
+                    // Layout of the `entry page`
+                    layout: 'Tags',
+                    // Layout of the `scope page`
+                    scopeLayout: 'Tag'
+                },
+            ],
+        }]
+    ],
+
     title: 'besolab',
     description: 'A place to store technical knowledge for myself.',
     locales: {
