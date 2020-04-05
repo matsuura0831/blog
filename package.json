@@ -5,7 +5,6 @@
         "debug": "node --nolazy --inspect-brk=9229 /opt/node_modules/.bin/vuepress dev docs"
     },
     "devDependencies": {
-        "@vuepress/plugin-blog": "^1.9.2",
         "vuepress": "^1.4.0"
     }
 }
