@@ -22,7 +22,7 @@ module.exports = {
                     dirname: '_posts',
                     // Path of the `entry page` (or `list page`)
                     path: '/',
-                    permalink: '/post/:year/:month/:day/:slug',
+                    itemPermalink: '/:year/:month/:day/:slug',
                 },
             ],
             frontmatters: [
