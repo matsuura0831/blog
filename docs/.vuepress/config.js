@@ -53,6 +53,9 @@ module.exports = {
 
     title: 'besolab',
     description: 'A place to store technical knowledge for myself.',
+    head: [
+        ['meta', { name: "google-site-verification", content: "0q-QVeFFAfyqwV4y7aF2OGBbto4tctFQ0C8MjBRCQ54"}],
+    ],
     locales: {
         '/': { lang: 'ja' },
     },
