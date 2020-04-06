@@ -3,6 +3,16 @@ module.exports = {
     dest: './build',
 
     plugins: [
+        /*
+        [require('./myplugin'), {
+            directories: [{
+                id: 'post',
+                sidebar: 'auto',
+                targetDir: '_posts',
+                permalink: '/post/:year/:month/:day/:slug',
+            }],
+        }],
+        */
         ['@vuepress/blog', {
             directories: [
                 {
@@ -12,6 +22,7 @@ module.exports = {
                     dirname: '_posts',
                     // Path of the `entry page` (or `list page`)
                     path: '/',
+                    permalink: '/post/:year/:month/:day/:slug',
                 },
             ],
             frontmatters: [
