@@ -1,3 +1,5 @@
+const BASE_URL = "https://besolab.com";
+
 module.exports = {
     base: '/',
     dest: './build',
@@ -39,7 +41,12 @@ module.exports = {
                     scopeLayout: 'Tag'
                 },
             ],
-        }]
+        }],
+        ["sitemap", {
+            hostname: BASE_URL,
+            changefreq: "weekly"
+        }
+        ],
     ],
 
     title: 'besolab',
