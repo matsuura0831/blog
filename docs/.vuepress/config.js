@@ -42,11 +42,13 @@ module.exports = {
                 },
             ],
         }],
-        ["sitemap", {
+        [ "sitemap", {
             hostname: BASE_URL,
             changefreq: "weekly"
-        }
-        ],
+        }],
+        [ '@vuepress/google-analytics', {
+            'ga': 'UA-6230037-2'
+        }],
     ],
 
     title: 'besolab',
