@@ -49,6 +49,7 @@ module.exports = {
         [ '@vuepress/google-analytics', {
             'ga': 'UA-6230037-2'
         }],
+        ['@vuepress/last-updated', {}],
     ],
 
     title: 'besolab',
