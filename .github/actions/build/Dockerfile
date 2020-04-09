@@ -1,8 +1,9 @@
 FROM node:13.12-alpine
 
-ADD .yarnrc $HOME/.yarnrc
+ENV NODE_PATH /opt/node_modules
 
 WORKDIR /workspace
+ADD .yarnrc /workspace/.yarnrc
 ADD package.json /workspace/package.json
 RUN yarn install
 

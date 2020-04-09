@@ -74,4 +74,14 @@ module.exports = {
             }
         ]
     },
+    markdown: {
+        lineNumbers: true,
+        linkify: true,
+
+        extendMarkdown: md => {
+            md.use(require('markdown-it-footnote'));
+            md.use(require('markdown-it-task-lists'));
+            md.use(require('markdown-it-abbr'));
+        }
+    },
 }
