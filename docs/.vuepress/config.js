@@ -16,6 +16,13 @@ module.exports = {
         }],
         */
         ['@vuepress/blog', {
+            feed: {
+                canonical_base: BASE_URL,
+            },
+            sitemap: {
+                hostname: BASE_URL,
+                changefreq: "weekly"
+            },
             directories: [
                 {
                     // Unique ID of current classification
@@ -41,10 +48,6 @@ module.exports = {
                     scopeLayout: 'Tag'
                 },
             ],
-        }],
-        [ "sitemap", {
-            hostname: BASE_URL,
-            changefreq: "weekly"
         }],
         [ '@vuepress/google-analytics', {
             'ga': 'UA-6230037-2'
