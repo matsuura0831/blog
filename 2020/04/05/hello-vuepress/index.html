@@ -8,7 +8,7 @@
     <meta name="generator" content="VuePress 1.4.0">
     <meta name="google-site-verification" content="0q-QVeFFAfyqwV4y7aF2OGBbto4tctFQ0C8MjBRCQ54">
     
-    <link rel="preload" href="/assets/css/0.styles.7759f9a2.css" as="style"><link rel="preload" href="/assets/js/app.e79dc9d9.js" as="script"><link rel="preload" href="/assets/js/4.40849423.js" as="script"><link rel="preload" href="/assets/js/2.f4a9c818.js" as="script"><link rel="preload" href="/assets/js/1.7bc09a03.js" as="script"><link rel="preload" href="/assets/js/9.4bccd8bc.js" as="script"><link rel="prefetch" href="/assets/js/10.a9363a3a.js"><link rel="prefetch" href="/assets/js/11.9147e93d.js"><link rel="prefetch" href="/assets/js/12.ac35a563.js"><link rel="prefetch" href="/assets/js/5.0e5592a6.js"><link rel="prefetch" href="/assets/js/6.b8d6e338.js"><link rel="prefetch" href="/assets/js/7.514e8164.js"><link rel="prefetch" href="/assets/js/8.44f8c9b2.js">
+    <link rel="preload" href="/assets/css/0.styles.7759f9a2.css" as="style"><link rel="preload" href="/assets/js/app.10d91686.js" as="script"><link rel="preload" href="/assets/js/4.40849423.js" as="script"><link rel="preload" href="/assets/js/2.f4a9c818.js" as="script"><link rel="preload" href="/assets/js/1.7bc09a03.js" as="script"><link rel="preload" href="/assets/js/9.90a756d6.js" as="script"><link rel="prefetch" href="/assets/js/10.9fc306dd.js"><link rel="prefetch" href="/assets/js/11.3de68841.js"><link rel="prefetch" href="/assets/js/12.ac35a563.js"><link rel="prefetch" href="/assets/js/5.0e5592a6.js"><link rel="prefetch" href="/assets/js/6.b8d6e338.js"><link rel="prefetch" href="/assets/js/7.514e8164.js"><link rel="prefetch" href="/assets/js/8.44f8c9b2.js">
     <link rel="stylesheet" href="/assets/css/0.styles.7759f9a2.css">
   </head>
   <body>
@@ -32,18 +32,19 @@
 もし不要なら当該行は削除してもよい．</p> <div class="language-docker line-numbers-mode"><pre class="language-docker"><code>$ cat docker/Dockerfile
 
 <span class="token keyword">FROM</span> node<span class="token punctuation">:</span>13.12<span class="token punctuation">-</span>alpine
+<span class="token keyword">ENV</span> NODE_PATH /opt/node_modules
 
 <span class="token keyword">RUN</span> apk update &amp;&amp; apk add git
-<span class="token keyword">ADD</span> .yarnrc $HOME/.yarnrc
 
 <span class="token keyword">WORKDIR</span> /workspace
+<span class="token keyword">ADD</span> .yarnrc /workspace/.yarnrc
 <span class="token keyword">ADD</span> package.json /workspace/package.json
 <span class="token keyword">RUN</span> yarn install
 
 <span class="token keyword">ADD</span> docs /workspace/docs
 <span class="token keyword">CMD</span> <span class="token punctuation">[</span><span class="token string">&quot;yarn&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;build&quot;</span><span class="token punctuation">]</span>
-</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br></div></div><p>イメージ作成に当たって，追加したファイルは<code>.yarnrc</code>と<code>package.json</code>の2種類．</p> <p>まず<code>.yarnrc</code>で<code>yarn install</code>した時に<code>/workspace/node_module/</code>から<code>/opt/node_modules</code>以下にインストールされるように修正．
-全ファイルを<code>docker -v</code>でマウントする際に<code>node_modules</code>を上書きしないようにするため．</p> <div class="language-rc line-numbers-mode"><pre class="language-text"><code>$ cat .yarnrc
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br></div></div><p>イメージ作成に当たって，追加したファイルは<code>.yarnrc</code>と<code>package.json</code>の2種類．</p> <p>まず<code>.yarnrc</code>で<code>yarn install</code>した時に<code>/workspace/node_module/</code>から<code>/opt/node_modules</code>以下にインストールされるように修正．
+全ファイルを<code>docker -v</code>でマウントする際に<code>node_modules</code>を上書きしないようにするためで，ちゃんと読み込まれるように<code>NODE_PATH</code>も一緒に設定しておく．</p> <div class="language-rc line-numbers-mode"><pre class="language-text"><code>$ cat .yarnrc
 
 --modules-folder /opt/node_modules
 </code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><p>また<code>package.json</code>で<code>RUN yarn install</code>でインストールされるパッケージのバージョンを固定．</p> <div class="language-json line-numbers-mode"><pre class="language-json"><code>$ cat package.json
@@ -172,14 +173,15 @@ githubユーザ用のページ <a href="https://your-github-id.github.io/" targe
 <span class="token builtin class-name">echo</span> <span class="token string">&quot;your-domain&quot;</span> <span class="token operator">&gt;</span> static/CNAME
 </code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><p><code>.github/actions/build/Dockerfile</code>も作成しておく．中身は<code>docker/Dockerfile</code>とあまり変わらない(<code>git</code>インストールをやめたぐらい)．</p> <div class="language-docker line-numbers-mode"><pre class="language-docker"><code><span class="token keyword">FROM</span> node<span class="token punctuation">:</span>13.12<span class="token punctuation">-</span>alpine
 
-<span class="token keyword">ADD</span> .yarnrc $HOME/.yarnrc
+<span class="token keyword">ENV</span> NODE_PATH /opt/node_modules
 
 <span class="token keyword">WORKDIR</span> /workspace
+<span class="token keyword">ADD</span> .yarnrc /workspace/.yarnrc
 <span class="token keyword">ADD</span> package.json /workspace/package.json
 <span class="token keyword">RUN</span> yarn install
 
 <span class="token keyword">CMD</span> <span class="token punctuation">[</span><span class="token string">&quot;yarn&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;build&quot;</span><span class="token punctuation">]</span>
-</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br></div></div><p>ここまで完成したらpushして動作するか確認する．</p> <div class="language-sh line-numbers-mode"><pre class="language-sh"><code><span class="token function">git</span> <span class="token function">add</span> .github
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br></div></div><p>ここまで完成したらpushして動作するか確認する．</p> <div class="language-sh line-numbers-mode"><pre class="language-sh"><code><span class="token function">git</span> <span class="token function">add</span> .github
 <span class="token function">git</span> <span class="token function">add</span> static
 <span class="token function">git</span> commit -m <span class="token string">&quot;add auto deploy github action flow.&quot;</span>
 <span class="token function">git</span> push
@@ -208,6 +210,6 @@ githubユーザ用のページ <a href="https://your-github-id.github.io/" targe
     <span class="token punctuation">]</span>
 <span class="token punctuation">}</span>
 </code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br></div></div><p>あとは<code>docs/.vuepress/config.js</code>に適当にBreakpointを設置して，デバック実行すると止まってくれることを確認できればOK．</p></div> <footer class="page-edit"><!----> <!----></footer> <!----> </main></div><div class="global-ui"></div></div>
-    <script src="/assets/js/app.e79dc9d9.js" defer></script><script src="/assets/js/4.40849423.js" defer></script><script src="/assets/js/2.f4a9c818.js" defer></script><script src="/assets/js/1.7bc09a03.js" defer></script><script src="/assets/js/9.4bccd8bc.js" defer></script>
+    <script src="/assets/js/app.10d91686.js" defer></script><script src="/assets/js/4.40849423.js" defer></script><script src="/assets/js/2.f4a9c818.js" defer></script><script src="/assets/js/1.7bc09a03.js" defer></script><script src="/assets/js/9.90a756d6.js" defer></script>
   </body>
 </html>
