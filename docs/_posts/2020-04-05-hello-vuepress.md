@@ -22,11 +22,12 @@ https://vuepress.vuejs.org/ という静的サイトジェネレータを作成�
 $ cat docker/Dockerfile
 
 FROM node:13.12-alpine
+ENV NODE_PATH /opt/node_modules
 
 RUN apk update && apk add git
-ADD .yarnrc $HOME/.yarnrc
 
 WORKDIR /workspace
+ADD .yarnrc /workspace/.yarnrc
 ADD package.json /workspace/package.json
 RUN yarn install
 
@@ -37,7 +38,7 @@ CMD ["yarn", "build"]
 イメージ作成に当たって，追加したファイルは`.yarnrc`と`package.json`の2種類．
 
 まず`.yarnrc`で`yarn install`した時に`/workspace/node_module/`から`/opt/node_modules`以下にインストールされるように修正．
-全ファイルを`docker -v`でマウントする際に`node_modules`を上書きしないようにするため．
+全ファイルを`docker -v`でマウントする際に`node_modules`を上書きしないようにするためで，ちゃんと読み込まれるように`NODE_PATH`も一緒に設定しておく．
 
 ```rc
 $ cat .yarnrc
@@ -297,9 +298,10 @@ echo "your-domain" > static/CNAME
 ```docker
 FROM node:13.12-alpine
 
-ADD .yarnrc $HOME/.yarnrc
+ENV NODE_PATH /opt/node_modules
 
 WORKDIR /workspace
+ADD .yarnrc /workspace/.yarnrc
 ADD package.json /workspace/package.json
 RUN yarn install
 
@@ -365,4 +367,3 @@ $ cat .vscode/launch.json
 ```
 
 あとは`docs/.vuepress/config.js`に適当にBreakpointを設置して，デバック実行すると止まってくれることを確認できればOK．
-
