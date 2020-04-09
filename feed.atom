@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://besolab.com</id>
+    <title>besolab</title>
+    <updated>2020-04-09T14:48:14.572Z</updated>
+    <generator>https://github.com/webmasterish/vuepress-plugin-feed</generator>
+    <link rel="alternate" href="https://besolab.com"/>
+    <link rel="self" href="https://besolab.com/feed.atom"/>
+    <subtitle>A place to store technical knowledge for myself.</subtitle>
+    <entry>
+        <title type="html"><![CDATA[Hello Vuepress]]></title>
+        <id>https://besolab.com/2020/04/05/hello-vuepress/</id>
+        <link href="https://besolab.com/2020/04/05/hello-vuepress/">
+        </link>
+        <updated>2020-04-05T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[https://vuepress.vuejs.org/ という静的サイトジェネレータを作成してサイト作成を行った時の手順について説明する．]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Develop VuePress plugins]]></title>
+        <id>https://besolab.com/2020/04/05/vuepress-plugins/</id>
+        <link href="https://besolab.com/2020/04/05/vuepress-plugins/">
+        </link>
+        <updated>2020-04-05T23:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Using Vue in Markdown]]></summary>
+    </entry>
+</feed>

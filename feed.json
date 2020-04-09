@@ -1,0 +1,23 @@
+{
+    "version": "https://jsonfeed.org/version/1",
+    "title": "besolab",
+    "home_page_url": "https://besolab.com",
+    "feed_url": "https://besolab.com/feed.json",
+    "description": "A place to store technical knowledge for myself.",
+    "items": [
+        {
+            "id": "https://besolab.com/2020/04/05/hello-vuepress/",
+            "url": "https://besolab.com/2020/04/05/hello-vuepress/",
+            "title": "Hello Vuepress",
+            "summary": "https://vuepress.vuejs.org/ という静的サイトジェネレータを作成してサイト作成を行った時の手順について説明する．",
+            "date_modified": "2020-04-05T00:00:00.000Z"
+        },
+        {
+            "id": "https://besolab.com/2020/04/05/vuepress-plugins/",
+            "url": "https://besolab.com/2020/04/05/vuepress-plugins/",
+            "title": "Develop VuePress plugins",
+            "summary": "Using Vue in Markdown",
+            "date_modified": "2020-04-05T23:00:00.000Z"
+        }
+    ]
+}
