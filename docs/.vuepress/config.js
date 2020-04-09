@@ -5,16 +5,6 @@ module.exports = {
     dest: './build',
 
     plugins: [
-        /*
-        [require('./myplugin'), {
-            directories: [{
-                id: 'post',
-                sidebar: 'auto',
-                targetDir: '_posts',
-                permalink: '/post/:year/:month/:day/:slug',
-            }],
-        }],
-        */
         ['@vuepress/blog', {
             feed: {
                 canonical_base: BASE_URL,
@@ -25,26 +15,25 @@ module.exports = {
             },
             directories: [
                 {
-                    // Unique ID of current classification
                     id: 'post',
-                    // Target directory
                     dirname: '_posts',
-                    // Path of the `entry page` (or `list page`)
                     path: '/',
                     itemPermalink: '/:year/:month/:day/:slug',
                 },
             ],
             frontmatters: [
                 {
-                    // Unique ID of current classification
+                    id: 'category',
+                    keys: ['category'],
+                    path: '/category/',
+                    layout: 'Categorys',
+                    scopeLayout: 'Category'
+                },
+                {
                     id: 'tag',
-                    // Decide that the frontmatter keys will be grouped under this classification
                     keys: ['tags'],
-                    // Path of the `entry page` (or `list page`)
                     path: '/tag/',
-                    // Layout of the `entry page`
                     layout: 'Tags',
-                    // Layout of the `scope page`
                     scopeLayout: 'Tag'
                 },
             ],
