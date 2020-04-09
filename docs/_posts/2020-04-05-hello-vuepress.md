@@ -15,9 +15,6 @@ https://vuepress.vuejs.org/ という静的サイトジェネレータを作成�
 
 ホストOSによる違いが出るのは嫌だったのですべてdocker上で動作させる．
 
-`git`インストールしているのは`vscode`の`Remote-Container`でdockerイメージ内で作業する際に`git`コマンドを直接入力できるようにするため．
-もし不要なら当該行は削除してもよい．
-
 ```docker
 $ cat docker/Dockerfile
 
@@ -35,7 +32,16 @@ ADD docs /workspace/docs
 CMD ["yarn", "build"]
 ```
 
-イメージ作成に当たって，追加したファイルは`.yarnrc`と`package.json`の2種類．
+`git`インストールしているのは`vscode`の`Remote-Container`でdockerイメージ内で作業する際に`git`コマンドを直接入力できるようにするため．
+
+::: tip
+[@vuepress/plugin-last-updated](https://vuepress.vuejs.org/plugin/official/plugin-last-updated.html)を利用する場合はgitが必須．
+
+内部で`git`コマンドを叩いて最終更新日を取得しているため入っていないと動いてくれない．
+またファイルがgit管理対象に入っていないと更新されないので注意．
+:::
+
+追加するファイルは`.yarnrc`と`package.json`の2種類．
 
 まず`.yarnrc`で`yarn install`した時に`/workspace/node_module/`から`/opt/node_modules`以下にインストールされるように修正．
 全ファイルを`docker -v`でマウントする際に`node_modules`を上書きしないようにするためで，ちゃんと読み込まれるように`NODE_PATH`も一緒に設定しておく．
@@ -293,12 +299,13 @@ echo "# Blog" > static/README.md
 echo "your-domain" > static/CNAME
 ```
 
-`.github/actions/build/Dockerfile`も作成しておく．中身は`docker/Dockerfile`とあまり変わらない(`git`インストールをやめたぐらい)．
+`.github/actions/build/Dockerfile`も作成しておく．中身は`docker/Dockerfile`と変わらない．
 
 ```docker
 FROM node:13.12-alpine
-
 ENV NODE_PATH /opt/node_modules
+
+RUN apk update && apk add git
 
 WORKDIR /workspace
 ADD .yarnrc /workspace/.yarnrc
