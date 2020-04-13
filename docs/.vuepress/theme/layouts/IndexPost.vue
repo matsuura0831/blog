@@ -1,7 +1,7 @@
 <template>
     <div class="theme-container">
         <Navbar />
-        <MyBlog />
+        <MyBlog :is-show-description="true" />
     </div>
 </template>
 
