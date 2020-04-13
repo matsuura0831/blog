@@ -8,9 +8,11 @@
         "@vuepress/plugin-blog": "^1.9.2",
         "@vuepress/plugin-google-analytics": "^1.4.0",
         "@vuepress/plugin-last-updated": "^1.4.0",
+        "autoprefixer": "^9.7.6",
         "markdown-it-abbr": "^1.0.4",
         "markdown-it-footnote": "^3.0.2",
         "markdown-it-task-lists": "^2.1.1",
+        "tailwindcss": "^1.2.0",
         "vuepress": "^1.4.0"
     }
 }

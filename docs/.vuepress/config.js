@@ -1,3 +1,5 @@
+const path = require('path')
+
 const BASE_URL = "https://besolab.com";
 
 module.exports = {
@@ -64,6 +66,12 @@ module.exports = {
                     { text: 'GitHub', link: 'https://github.com/matsuura0831/' }
                 ]
             }
+        ]
+    },
+    postcss: {
+        plugins: [
+            require("autoprefixer"),
+            require("tailwindcss")(path.resolve(__dirname, 'tailwind.config.js')),
         ]
     },
     markdown: {
