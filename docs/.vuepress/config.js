@@ -44,12 +44,14 @@ module.exports = {
             'ga': 'UA-6230037-2'
         }],
         ['@vuepress/last-updated', {}],
+        [require('./myplugin'), {}],
     ],
 
     title: 'besolab',
     description: 'A place to store technical knowledge for myself.',
     head: [
         ['meta', { name: "google-site-verification", content: "0q-QVeFFAfyqwV4y7aF2OGBbto4tctFQ0C8MjBRCQ54"}],
+        ['script', { src: "https://kit.fontawesome.com/845cc1d72b.js", crossorigin: "anonymous"}],
     ],
     locales: {
         '/': { lang: 'ja' },
