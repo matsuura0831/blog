@@ -16,7 +16,7 @@
             "id": "https://besolab.com/2020/04/05/vuepress-plugins/",
             "url": "https://besolab.com/2020/04/05/vuepress-plugins/",
             "title": "Develop VuePress plugins",
-            "summary": "Using Vue in Markdown",
+            "summary": "VuePressを改造するにあたり幾つかの選択肢が存在するの整理していく．",
             "date_modified": "2020-04-05T23:00:00.000Z"
         }
     ]
