@@ -15,16 +15,23 @@
                         <a class="text-gray-600" :href="'/tag/' +  t">{{ t }}</a>
                     </li>
                 </ul>
-                <p class="mt-4 text-lg" v-if="isShowDescription">{{ p.frontmatter.description }}</p>
+                <p class="mt-4 text-lg" v-if="shouldShowDescription">{{ p.frontmatter.description }}</p>
             </div>
             
         </section>
+
+        <slot name="bottom" />
     </div>
 </template>
 
 <script>
 export default {
-    props: [ 'isShowDescription' ],
+    props: {
+        shouldShowDescription: {
+            type: Boolean,
+            default: false
+        },
+    },
     computed: {
         posts() {
             const pages = this.$pagination.pages.map(v => {

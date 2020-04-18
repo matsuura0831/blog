@@ -1,16 +1,17 @@
 <template>
-    <div class="theme-container">
-        <Navbar />
-        <MyBlog :is-show-description="true" />
-    </div>
+    <MyBlog
+        :shouldShowSidebar="false"
+        :shouldShowDescription="true"
+        />
 </template>
 
 <script>
-import Navbar from "@theme/components/Navbar.vue";
-import MyBlog from "@theme/mycomponents/Blog.vue";
+import MyBlog from "@theme/mycomponents/BlogPage.vue";
 
 export default {
     name: "IndexPost",
-    components: { Navbar, MyBlog },
-};
+    components: {
+        MyBlog
+    },
+}
 </script>
