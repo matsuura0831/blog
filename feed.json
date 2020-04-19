@@ -18,6 +18,13 @@
             "title": "Develop VuePress plugins",
             "summary": "VuePressを改造するにあたり幾つかの選択肢が存在するの整理していく．",
             "date_modified": "2020-04-05T23:00:00.000Z"
+        },
+        {
+            "id": "https://besolab.com/2020/04/19/vuepress-blog/",
+            "url": "https://besolab.com/2020/04/19/vuepress-blog/",
+            "title": "Customize VuePress Blog",
+            "summary": "VuePressをBlog用にカスタマイズする手順を記す．",
+            "date_modified": "2020-04-19T13:00:00.000Z"
         }
     ]
 }

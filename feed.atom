@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://besolab.com</id>
     <title>besolab</title>
-    <updated>2020-04-18T17:56:59.850Z</updated>
+    <updated>2020-04-19T05:02:10.411Z</updated>
     <generator>https://github.com/webmasterish/vuepress-plugin-feed</generator>
     <link rel="alternate" href="https://besolab.com"/>
     <link rel="self" href="https://besolab.com/feed.atom"/>
@@ -22,5 +22,13 @@
         </link>
         <updated>2020-04-05T23:00:00.000Z</updated>
         <summary type="html"><![CDATA[VuePressを改造するにあたり幾つかの選択肢が存在するの整理していく．]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Customize VuePress Blog]]></title>
+        <id>https://besolab.com/2020/04/19/vuepress-blog/</id>
+        <link href="https://besolab.com/2020/04/19/vuepress-blog/">
+        </link>
+        <updated>2020-04-19T13:00:00.000Z</updated>
+        <summary type="html"><![CDATA[VuePressをBlog用にカスタマイズする手順を記す．]]></summary>
     </entry>
 </feed>
