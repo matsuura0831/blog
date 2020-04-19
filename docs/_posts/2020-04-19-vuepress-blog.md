@@ -175,7 +175,7 @@ export default {
 https://vuepress.vuejs.org/plugin/official/plugin-google-analytics.html
 
 グーグルのアクセス解析を設定するプラグイン．
-`Google Analytics ID`を取得するのが大変化もしれないが，VuePress設定としては値を入力するだけなので簡単
+`Google Analytics ID`を取得するのが若干大変だが，VuePress設定としては値を入力するだけなので簡単
 
 
 ## Others
@@ -260,9 +260,9 @@ cssが読み込まれるようにする．以下はデフォルトテーマ抽�
 
 ```sh
 $ cd docs/.vuepress/theme/styles
-$ mv index.styl index_base.style
+$ mv index.styl index_base.styl
 
-$ vi index.style
+$ vi index.styl
 
 @tailwind base;
 @tailwind components;
@@ -276,7 +276,7 @@ $ vi index.style
 @tailwind utilities;
 ```
 
-VuePressのバージョンアップで元々の`index.syle`が劇的に変わるとしんどいので`index_base.style`にリネームしてインポートするようにした．
+VuePressのバージョンアップで元々の`index.syl`が劇的に変わるとしんどいので`index_base.styl`にリネームしてインポートするようにした．
 またtailwindによるmarginリセットで記事の余白が消されていたので`.theme-default-content p`で修正している．
 
 自分で何かを追加したい場合は `@tailwind components;` と `@tailwind utilities;` の間に指定するらしい．
