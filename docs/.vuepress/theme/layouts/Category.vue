@@ -13,7 +13,7 @@
                                 <a href="#">{{ t }}[{{ $category.map[t].pages.length }}]</a>
                             </span>
                             <span v-else>
-                                <a class="text-gray-600" :href="'/tag/' +  t">{{ t }}[{{ $category.map[t].pages.length }}]</a>
+                                <a class="text-gray-600" :href="'/category/' +  t">{{ t }}[{{ $category.map[t].pages.length }}]</a>
                             </span>
                         </li>
                     </ul>
