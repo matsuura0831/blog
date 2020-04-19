@@ -14,7 +14,7 @@ module.exports = (option, context) => {
                 //path,                // current page's real link (use regularPath when permalink does not exist)
             } = $page
 
-            if ($page.id) { // add $page.id by plugin-blog
+            if (frontmatter && !frontmatter.description && $page.id) {
                 frontmatter.description = frontmatter.description || _strippedContent.split('\n').filter(e => /^\w/.test(e))[0]
             }
         },
