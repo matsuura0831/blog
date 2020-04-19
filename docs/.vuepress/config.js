@@ -28,7 +28,7 @@ module.exports = {
                     id: 'category',
                     keys: ['category'],
                     path: '/category/',
-                    layout: 'Categorys',
+                    layout: 'Categories',
                     scopeLayout: 'Category'
                 },
                 {
