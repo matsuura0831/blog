@@ -6,7 +6,7 @@ tags:
   - aws
 ---
 
-# AWS Multi-account strategy
+# AWS Multi-account strategy その1
 
 50人程度のチームでAWS運用をはじめて暫く立ったので運用に関しての方法論を整理して残しておく．
 
