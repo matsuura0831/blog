@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>AWS Multi-account Strategy その1 | besolab</title>
+    <meta name="generator" content="VuePress 1.4.1">
+    <script src="https://kit.fontawesome.com/845cc1d72b.js" crossorigin="anonymous"></script>
+    <link rel="alternate" type="application/rss+xml" href="https://besolab.com/rss.xml" title="besolab RSS Feed">
+    <link rel="alternate" type="application/atom+xml" href="https://besolab.com/feed.atom" title="besolab Atom Feed">
+    <link rel="alternate" type="application/json" href="https://besolab.com/feed.json" title="besolab JSON Feed">
+    <meta name="description" content="50人程度のチームでAWS運用をはじめて暫く立ったので運用に関しての方法論を整理して残しておく．">
+    <meta name="google-site-verification" content="0q-QVeFFAfyqwV4y7aF2OGBbto4tctFQ0C8MjBRCQ54">
+    <link rel="preload" href="/assets/css/0.styles.5764ec94.css" as="style"><link rel="preload" href="/assets/js/app.7d723df3.js" as="script"><link rel="preload" href="/assets/js/10.0079c4dd.js" as="script"><link rel="preload" href="/assets/js/1.3df33e52.js" as="script"><link rel="preload" href="/assets/js/2.cc8a5eea.js" as="script"><link rel="preload" href="/assets/js/14.45007645.js" as="script"><link rel="prefetch" href="/assets/js/11.67d7cfee.js"><link rel="prefetch" href="/assets/js/12.c87abdd7.js"><link rel="prefetch" href="/assets/js/13.3ad6bfa9.js"><link rel="prefetch" href="/assets/js/15.e606d726.js"><link rel="prefetch" href="/assets/js/16.341e2373.js"><link rel="prefetch" href="/assets/js/4.a881a070.js"><link rel="prefetch" href="/assets/js/5.22a6e543.js"><link rel="prefetch" href="/assets/js/6.dc87170f.js"><link rel="prefetch" href="/assets/js/7.4c951457.js"><link rel="prefetch" href="/assets/js/8.2fc59597.js"><link rel="prefetch" href="/assets/js/9.2a95f388.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.5764ec94.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">besolab</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/about/" class="nav-link">
+  About
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="SNS" class="dropdown-title"><span class="title">SNS</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://twitter.com/matsuura0831/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Twitter
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li><li class="dropdown-item"><!----> <a href="https://github.com/matsuura0831/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/about/" class="nav-link">
+  About
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="SNS" class="dropdown-title"><span class="title">SNS</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://twitter.com/matsuura0831/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Twitter
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li><li class="dropdown-item"><!----> <a href="https://github.com/matsuura0831/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>AWS Multi-account Strategy その1</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/2020/04/22/aws-multi-account-strategy/#はじめに" class="sidebar-link">はじめに</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/2020/04/22/aws-multi-account-strategy/#マルチアカウント構成-organizations" class="sidebar-link">マルチアカウント構成(Organizations)</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/2020/04/22/aws-multi-account-strategy/#ユーザアカウント管理-single-sign-on" class="sidebar-link">ユーザアカウント管理(Single Sign-On)</a><ul class="sidebar-sub-headers"></ul></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="aws-multi-account-strategy"><a href="#aws-multi-account-strategy" class="header-anchor">#</a> AWS Multi-account strategy</h1> <p>50人程度のチームでAWS運用をはじめて暫く立ったので運用に関しての方法論を整理して残しておく．</p> <h2 id="はじめに"><a href="#はじめに" class="header-anchor">#</a> はじめに</h2> <p>企業での利用のため割と厳しめの監査が発生する．
+その監査に耐えうるような仕組みを構築しなければならないというのが第一の制限．
+また色々なプロジェクトを立ち上げて外部協力会社にリソースを使わせたりしている．
+身内以外が使え，更にプロジェクト毎にアイソレーションされなければならないというのが第二の制限．</p> <p>これらを踏まえた上で環境構築をする必要があるのだが，正直AWSアカウント1個だと上記のことを実現するのは不可能．
+はじめのうちはIAMユーザの権限を細かく変更することで対応出来なくはないが，規模が大きくなるにつれ管理コストが爆発し管理者は絶望するしかなくなる．</p> <p>上記についてどうしようかと悩んでいたところ下記記事を見つけ，マルチアカウントなる方針を知ったのがおおよそ2年前．</p> <p><a href="http://Developers.IO" target="_blank" rel="noopener noreferrer">Developers.IO<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>: 【レポート】マルチアカウント戦略におけるセキュリティとガバナンスのアーキテクチャ設計 #reinvent #SID331
+<a href="https://dev.classmethod.jp/articles/aws-reinvent-sid331/" target="_blank" rel="noopener noreferrer">https://dev.classmethod.jp/articles/aws-reinvent-sid331/<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p> <p>ポイントとなるのが Organizations という機能で，これは <code>AWSアカウントを簡単に新規作成し，支払いをMasterアカウントに紐づける</code> 機能となる．
+AWSアカウントを新規で作成しようとすると割と面倒くさいのだが上記を用いると数ステップで作成ができる．
+これで所定の粒度でAWSアカウントを作成し，AWSアカウントという単位で諸々を分離することができるようになる<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>．</p> <p>ただ無軌道にAWSアカウントを作成して配ると皆さん割と無茶苦茶な事をするので，いくらかのガバナンスを効かせるための仕組みが必要となる．
+このガバナンスをどの程度・どういう方向性で聞かせるかというのが問題で，効かせまくると使ってくれなくなるし，効かせないと無法地帯となるしで割と難しい問題．</p> <p>これも悩んでいたところ下記記事を見つけ，<code>信ぜよ、されど確認せよ</code>というアプローチもあるんだなと学んだのがおおよそ1年前．</p> <p>SlideShare: 「これ危ない設定じゃないでしょうか」とヒアリングするための仕組み @AWS Summit Tokyo 2018
+<a href="https://www.slideshare.net/cyberagent/awssummit2018-ca-kakishimaazuma" target="_blank" rel="noopener noreferrer">https://www.slideshare.net/cyberagent/awssummit2018-ca-kakishimaazuma<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p> <p>これから色々と試行錯誤してようやく満足のいく構成が整いつつあるので，その内容をまとめるぞ！というのが本記事の位置づけ．</p> <h2 id="マルチアカウント構成-organizations"><a href="#マルチアカウント構成-organizations" class="header-anchor">#</a> マルチアカウント構成(Organizations)</h2> <p>Organizationsを使うとアカウントを量産できるが，それもある程度のルールが必要となる．</p> <p>先のreinventの紹介記事にアカウント作成事例も乗っていたので参考に以下のように設計した．
+ここら辺は状況に応じて適切なものも変わるので，適宜調整すると良いと思う．</p> <ul><li>Coreアカウント
+<ul><li>Master: Organizationsのマスタアカウント．Cloudformationを利用したリソース配布も行う</li> <li>Audit: 監査機能・通知を集約するアカウント．</li> <li>Log: 各種ログを集約するアカウント．</li></ul></li> <li>Customアカウント
+<ul><li><code>Project_*</code>: プロジェクト毎に作成するアカウント</li> <li><code>Sandbox_*</code>: 個人毎に作成するアカウント</li> <li><code>Shared</code>: 利用者が広く利用するリソースを作成するアカウント(Webサービス，proxyなど)</li></ul></li></ul> <p>更に，OrganizationsではService Control Policy(SCP)というアカウント単位で各リソースに対する権限を設定することができる．
+例えば以下のような<code>Deny-All</code>というポリシーを作成し，アカウントに付与すると全く何もできなくなる．</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Effect&quot;: &quot;Deny&quot;,
+            &quot;Action&quot;: &quot;*&quot;,
+            &quot;Resource&quot;: &quot;*&quot;
+        }
+    ]
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br></div></div><p>例えば<code>Action</code>の部分を<code>ec2:*</code>にするとEC2に関しては何もできなくなるし，<code>Resource</code>でARNを指定すると当該リソースのみ利用できなくなる．
+また<code>Condition</code>という条件分岐も付与できる．</p> <p>こうして定義したSCPはアカウント個別に紐づけることもできるが，Organizationsの機能で組織単位(OU; Organizational Unit)でアカウントをグルーピングしたうえでグループに対して適用することもできる．
+OUというと分かりにくいが，ディレクトリ構造でアカウントをファイルのような形で放り込むようなイメージ．
+SCPはファイル(アカウント)に紐づけたり，ディレクトリ(OU)に紐づける事ができ，親ディレクトリ(OU)の制限を子ディレクトリ(OU)は継承する<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>．</p> <p>上記のSCPとOUを駆使して以下のような権限設定を行い，各アカウントを<code>SHARE, JP_PUBLIC, JP_PRIVATE</code>のどれかに放り込むことでザックリとした権限設定を行う．</p> <ul><li>JP_ONLY: 東京リージョン以外でのリソース作成を禁止する + IAMユーザの作成を禁止する
+<ul><li>SHARE: ほかに制限なし</li> <li>NOT_SHARE: 更にドメイン取得・作成を禁止する
+<ul><li>JP_PUBLIC: ほかに制限なし</li> <li>JP_PRIVATE: 更にEIP, IGW, NATといったインターネット接続する際に必要なリソース作成を禁止する</li></ul></li></ul></li></ul> <p>なお東京リージョンだけでは利用できないリソース(コンソールからアクセスした際に右上のリージョン表示がグローバルになるやつ)や，東京リージョン未対応な機能(SNSとか)は除外して以下のように設定している．</p> <details class="custom-block details"><summary>DETAILS</summary> <div class="language- line-numbers-mode"><pre class="language-text"><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+			&quot;Sid&quot;: &quot;DenyActionOutsideJP&quot;,
+			&quot;Effect&quot;: &quot;Deny&quot;,
+			&quot;NotAction&quot;: [
+				&quot;cloudformation:*&quot;,
+				&quot;sns:*&quot;,
+				&quot;ses:*&quot;,
+				&quot;ecs:*&quot;,
+				&quot;ecr:*&quot;,
+				&quot;ds:*&quot;,
+				&quot;health:*&quot;,
+				&quot;s3:*&quot;,
+				&quot;sts:*&quot;,
+				&quot;iam:*&quot;,
+				&quot;organizations:*&quot;,
+				&quot;route53:*&quot;,
+				&quot;route53domains:*&quot;,
+				&quot;budgets:*&quot;,
+				&quot;waf:*&quot;,
+				&quot;cloudfront:*&quot;,
+				&quot;globalaccelerator:*&quot;,
+				&quot;importexport:*&quot;,
+				&quot;support:*&quot;,
+				&quot;imagebuilder:*&quot;
+			],
+			&quot;Resource&quot;: [
+				&quot;*&quot;
+			],
+			&quot;Condition&quot;: {
+				&quot;StringNotEquals&quot;: {
+					&quot;aws:RequestedRegion&quot;: [
+						&quot;ap-northeast-1&quot;
+					]
+				}
+			}
+		},
+		{
+			&quot;Sid&quot;: &quot;AllowActionOnTokyoVirginia&quot;,
+			&quot;Effect&quot;: &quot;Deny&quot;,
+			&quot;Action&quot;: [
+				&quot;cloudformation:*&quot;,
+				&quot;sns:*&quot;
+			],
+			&quot;Resource&quot;: [
+				&quot;*&quot;
+			],
+			&quot;Condition&quot;: {
+				&quot;StringNotEquals&quot;: {
+					&quot;aws:RequestedRegion&quot;: [
+						&quot;ap-northeast-1&quot;,
+						&quot;us-east-1&quot;
+					]
+				}
+			}
+		},
+		{
+			&quot;Sid&quot;: &quot;AllowActionOnVirginia&quot;,
+			&quot;Effect&quot;: &quot;Deny&quot;,
+			&quot;Action&quot;: [
+				&quot;ses:*&quot;
+			],
+			&quot;Resource&quot;: [
+				&quot;*&quot;
+			],
+			&quot;Condition&quot;: {
+				&quot;StringNotEquals&quot;: {
+					&quot;aws:RequestedRegion&quot;: [
+						&quot;us-east-1&quot;
+					]
+				}
+			}
+		},
+		{
+			&quot;Sid&quot;: &quot;DenyCreateIamCreateUser&quot;,
+			&quot;Effect&quot;: &quot;Deny&quot;,
+			&quot;Action&quot;: &quot;iam:CreateUser&quot;,
+			&quot;Resource&quot;: [
+				&quot;*&quot;
+			]
+		}
+    ]
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br><span class="line-number">68</span><br><span class="line-number">69</span><br><span class="line-number">70</span><br><span class="line-number">71</span><br><span class="line-number">72</span><br><span class="line-number">73</span><br><span class="line-number">74</span><br><span class="line-number">75</span><br><span class="line-number">76</span><br><span class="line-number">77</span><br><span class="line-number">78</span><br><span class="line-number">79</span><br><span class="line-number">80</span><br><span class="line-number">81</span><br><span class="line-number">82</span><br><span class="line-number">83</span><br><span class="line-number">84</span><br><span class="line-number">85</span><br></div></div></details> <h2 id="ユーザアカウント管理-single-sign-on"><a href="#ユーザアカウント管理-single-sign-on" class="header-anchor">#</a> ユーザアカウント管理(Single Sign-On)</h2> <p>OrganizationsのSCPでさらっと<code>IAMユーザの作成を禁止する</code>と記載したが，ではどのようにしてアカウントにログインすれば良いか．
+ここでSingle Sign-On(SSO)機能を有効化することを考える．</p> <p>SSOはOrganizationsと連携させることができ，Organizations影響化のAWSアカウントとSSOユーザの紐づけを行うことができる．
+紐づけを完了した後SSOログインを行うと，以下のようにアクセスするAWSアカウントを選択することができる(例ではmasterとdevアカウントに紐づけたユーザでログインした)．</p> <p><img src="/image/2020-04-22/sso_login.png" alt="SSOログインページ"></p> <p><code>Management console</code>というリンクを選択するとmasterアカウントのWebコンソールに飛ぶことができ，<code>Command line or programmatic access</code>を選ぶとaws-cli用のcredentialを取得できる．</p> <p>なおSSOログイン時に多要素認証(MFA; Multi-Factor Authentication)を強制させることができるため，Webコンソールへのアクセスおよびaws-cli利用時に自然とMFA認証を突破することを強制させることができる．
+旧来のIAMログインの場合はWebコンソールのみMFAしてaws-cliにはMFAをかけないといった運用にしがちだが，SSOの場合はそれが解消できるのが嬉しい．
+なおSSOログインにはExpiredTimeが指定されているようで，おおよそ2時間経過するとWebコンソールとaws-cliが利用できなくなる．
+面倒くさいといえばそうだが，監査を考えると非常に有利．</p> <p>デフォルトだとSSOユーザ作成時に登録したメールアドレスにワンタイムパスワードが到着するが，1Password等のアプリ認証に変更することができる．
+SSOの設定から<code>MFAデバイスを管理できるユーザー</code>を<code>ユーザーと管理者がMFAデバイスを追加および管理できる</code>に変更して，利用者が独自に指定できるようにするといい．
+利用者が登録する際は上記画面の右上の<code>My Devices</code>から登録画面に飛ぶことができる．</p> <p>なおAWSアカウントにはSSOユーザかSSOグループのどちらかを紐づけする事ができる．
+好みの問題もあるがユーザが増えると大変になるので，なるべくグループを作成してグループ単位で紐づけるようにするのをお勧め．</p> <div class="custom-block tip"><p class="custom-block-title">TIP</p> <p>SSOはAWSアカウントと紐づけるだけでなく，Webサービスのログイン処理にも利用することができる．
+SAML認証に対応していればOK．</p> <p>企業の内部監査ではアカウント管理簿なる存在を作成する必要があると思うが，SSOに寄せていればSSOだけ管理すればよい(事が多い)ため．</p></div> <p>といったところで<strong>その1</strong>は終了．
+次は作成したアカウントに対してどのようにガバナンスを効かせるかを執筆予定．</p> <hr class="footnotes-sep"> <section class="footnotes"><ol class="footnotes-list"><li id="fn1" class="footnote-item"><p>ただし作成が容易になるだけであって削除は割と面倒くさい．なので作るときは本当に必要かを考えた方がいい <a href="#fnref1" class="footnote-backref">↩︎</a></p></li> <li id="fn2" class="footnote-item"><p>AllowとDenyが混じるとしんどいので，ホワイトリスト(Allowのみ)にするかブラックリスト(Denyのみ)にするか，片方に寄せるのがベター <a href="#fnref2" class="footnote-backref">↩︎</a></p></li></ol></section></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">2020/4/22 13:53:57</span></div></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.7d723df3.js" defer></script><script src="/assets/js/10.0079c4dd.js" defer></script><script src="/assets/js/1.3df33e52.js" defer></script><script src="/assets/js/2.cc8a5eea.js" defer></script><script src="/assets/js/14.45007645.js" defer></script>
+  </body>
+</html>
