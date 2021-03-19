@@ -33,6 +33,13 @@
             "summary": "50人程度のチームでAWS運用をはじめて暫く立ったので運用に関しての方法論を整理して残しておく．",
             "image": "https://besolab.com/image/2020-04-22/sso_login.png",
             "date_modified": "2020-04-22T20:30:00.000Z"
+        },
+        {
+            "id": "https://besolab.com/2021/03/19/aws-multi-account-strategy/",
+            "url": "https://besolab.com/2021/03/19/aws-multi-account-strategy/",
+            "title": "AWS Multi-account Strategy その2",
+            "summary": "コンプラ違反の検出(Config)",
+            "date_modified": "2021-03-19T22:30:00.000Z"
         }
     ]
 }

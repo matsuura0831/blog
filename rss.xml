@@ -4,7 +4,7 @@
         <title>besolab</title>
         <link>https://besolab.com</link>
         <description>A place to store technical knowledge for myself.</description>
-        <lastBuildDate>Wed, 22 Apr 2020 13:56:52 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 19 Mar 2021 20:09:34 GMT</lastBuildDate>
         <docs>http://blogs.law.harvard.edu/tech/rss</docs>
         <generator>https://github.com/webmasterish/vuepress-plugin-feed</generator>
         <atom:link href="https://besolab.com/feed.atom" rel="self" type="application/rss+xml"/>
@@ -37,6 +37,13 @@
             <description><![CDATA[50人程度のチームでAWS運用をはじめて暫く立ったので運用に関しての方法論を整理して残しておく．]]></description>
             <enclosure url="https://besolab.com/image/2020-04-22/sso_login.png">
             </enclosure>
+        </item>
+        <item>
+            <title><![CDATA[AWS Multi-account Strategy その2]]></title>
+            <link>https://besolab.com/2021/03/19/aws-multi-account-strategy/</link>
+            <guid>https://besolab.com/2021/03/19/aws-multi-account-strategy/</guid>
+            <pubDate>Fri, 19 Mar 2021 22:30:00 GMT</pubDate>
+            <description><![CDATA[コンプラ違反の検出(Config)]]></description>
         </item>
     </channel>
 </rss>
