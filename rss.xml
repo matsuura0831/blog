@@ -4,7 +4,7 @@
         <title>besolab</title>
         <link>https://besolab.com</link>
         <description>A place to store technical knowledge for myself.</description>
-        <lastBuildDate>Sat, 20 Mar 2021 17:41:35 GMT</lastBuildDate>
+        <lastBuildDate>Sat, 20 Mar 2021 17:45:46 GMT</lastBuildDate>
         <docs>http://blogs.law.harvard.edu/tech/rss</docs>
         <generator>https://github.com/webmasterish/vuepress-plugin-feed</generator>
         <atom:link href="https://besolab.com/feed.atom" rel="self" type="application/rss+xml"/>
