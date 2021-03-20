@@ -38,7 +38,7 @@
             "id": "https://besolab.com/2021/03/19/aws-multi-account-strategy/",
             "url": "https://besolab.com/2021/03/19/aws-multi-account-strategy/",
             "title": "AWS Multi-account Strategy その2",
-            "summary": "コンプラ違反の検出(Config)",
+            "summary": "前回からの続きで，作成したアカウントに対してガバナンスを効かせる方法について整理する．",
             "date_modified": "2021-03-19T22:30:00.000Z"
         }
     ]

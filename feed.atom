@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://besolab.com</id>
     <title>besolab</title>
-    <updated>2021-03-20T09:32:11.106Z</updated>
+    <updated>2021-03-20T17:41:35.599Z</updated>
     <generator>https://github.com/webmasterish/vuepress-plugin-feed</generator>
     <link rel="alternate" href="https://besolab.com"/>
     <link rel="self" href="https://besolab.com/feed.atom"/>
@@ -45,6 +45,6 @@
         <link href="https://besolab.com/2021/03/19/aws-multi-account-strategy/">
         </link>
         <updated>2021-03-19T22:30:00.000Z</updated>
-        <summary type="html"><![CDATA[コンプラ違反の検出(Config)]]></summary>
+        <summary type="html"><![CDATA[前回からの続きで，作成したアカウントに対してガバナンスを効かせる方法について整理する．]]></summary>
     </entry>
 </feed>
