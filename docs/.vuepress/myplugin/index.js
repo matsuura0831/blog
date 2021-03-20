@@ -15,7 +15,7 @@ module.exports = (option, context) => {
             } = $page
 
             if (frontmatter && !frontmatter.description && $page.id) {
-                frontmatter.description = frontmatter.description || _strippedContent.split('\n').filter(e => /^\w/.test(e))[0]
+                frontmatter.description = frontmatter.description || _strippedContent.split('\n').filter(e => !/^\s*$/.test(e) && !/#/.test(e))[0]
             }
         },
     }
