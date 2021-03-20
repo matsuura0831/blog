@@ -252,26 +252,24 @@ Outputs:
 * OrgID: OrganizationsのID．Masterアカウント上で調べたのを記載
 * SubscribeToAllConfigurationTopic: AllConfigurationEmail有効化のフラグ．trueだと通知が飛ぶ．めっちゃ多いのでプログラム処理しない限りfalse推奨
 
-以下のように実行する．Auditアカウントのcredentialを取得して設定しておくこと．
+以下のように実行する．Masterアカウントのcredentialを取得して設定しておくこと．
 
 ```sh
-STACK_NAME=AWSOrganizations-SecurityTopic
-REGIONS='["ap-northeast-1"]'
-ORG_ID='<OrganizationsのID>'
-ACCOUNT='"<AuditアカウントID>"'
 EMAIL_ALL='"<全通知を受けるメールアドレス>"'
 EMAIL_NOTIFY='"<セキュリティ通知を受けるメールアドレス>"'
 
-aws cloudformation create-stack-set --stack-set-name ${STACK_NAME} --template-body file://security-topic.yml
+STACK_NAME=AWSOrganizations-SecurityTopic
+REGIONS='["ap-northeast-1"]'
+ORG_ID=`aws organizations describe-organization | jq ".Organization.Id"`
+ACCOUNT=`aws organizations list-accounts | jq '.Accounts[] | select(.Name == "audit") | .Id'`
 
-aws cloudformation create-stack-instances
-  --stack-set-name ${STACK_NAME}
-  --accounts "[${ACCOUNT}]"
-  --regions ${REGIONS}
-  --operation-preferences FailureToleranceCount=0,MaxConcurrentCount=1
-  --parameters "ParameterKey=AllConfigurationEmail,ParameterValue=${EMAIL_ALL}"
-  --parameters "ParameterKey=SecurityNotificationEmail,ParameterValue=${EMAIL_NOTIFY}"
-  --parameters "ParameterKey=OrgID,ParameterValue=${ORG_ID}"
+aws cloudformation create-stack-set --stack-set-name ${STACK_NAME} --template-body file://security-topic.yml
+  --parameters \
+    ParameterKey=AllConfigurationEmail,ParameterValue=${EMAIL_ALL} \
+    ParameterKey=SecurityNotificationEmail,ParameterValue=${EMAIL_NOTIFY} \
+    ParameterKey=OrgID,ParameterValue=${ORG_ID}
+
+aws cloudformation create-stack-instances --stack-set-name ${STACK_NAME} --accounts "[${ACCOUNT}]" --regions ${REGIONS}
 ```
 
 ### Config集約設定
@@ -368,16 +366,13 @@ Outputs:
 ```sh
 STACK_NAME=AWSOrganizations-SecurityResource
 REGIONS='["ap-northeast-1"]'
-ACCOUNT='"<AuditアカウントID>"'
-TARGET_ACCOUNT='"<TargetアカウントID1>","<TargetアカウントID2>",...'
+
+ACCOUNT=`aws organizations list-accounts | jq '.Accounts[] | select(.Name == "audit") | .Id'`
+TARGET_ACCOUNT=`aws organizations list-accounts | jq '[.Accounts[] | select(.Name != "master" and .Name != "audit" and .Name != "log") | .Id] | join(",")'`
 
 aws cloudformation create-stack-set --stack-set-name ${STACK_NAME} --template-body file://security-resource.yml --capabilities CAPABILITY_NAMED_IAM --parameters "ParameterKey=Accounts,ParameterValue=${TARGET_ACCOUNT}"
-aws cloudformation create-stack-instances --stack-set-name ${STACK_NAME} --accounts "[${ACCOUNT}]" --regions ${REGIONS} --operation-preferences FailureToleranceCount=0,MaxConcurrentCount=1
+aws cloudformation create-stack-instances --stack-set-name ${STACK_NAME} --accounts "[${ACCOUNT}]" --regions ${REGIONS}
 ```
-
-Targetアカウント追加時はaws-cliとjqあたりを組み合わせてTARGET_ACCOUNT自動取得しつつ更新すると良い．
-
-**TODO: あとでコマンドサンプル記載すること**
 
 ## ログアカウントの設定
 
@@ -528,8 +523,12 @@ Outputs:
 ```sh
 STACK_NAME=AWSOrganizations-LoggingResource
 REGIONS='["ap-northeast-1"]'
-ACCOUNT='"<LogアカウントID>"'
 
-aws cloudformation create-stack-set --stack-set-name ${STACK_NAME} --template-body file://logging-resource.yml
-aws cloudformation create-stack-instances --stack-set-name ${STACK_NAME} --accounts "[${ACCOUNT}]" --regions ${REGIONS} --operation-preferences FailureToleranceCount=0,MaxConcurrentCount=1
+ACCOUNT=`aws organizations list-accounts | jq '.Accounts[] | select(.Name == "log") | .Id'`
+ORG_ID=`aws organizations describe-organization | jq ".Organization.Id"`
+
+aws cloudformation create-stack-set --stack-set-name ${STACK_NAME} --template-body file://logging-resource.yml \
+  --parameters "ParameterKey=AWSLogsS3KeyPrefix,ParameterValue=${ORG_ID}"
+
+aws cloudformation create-stack-instances --stack-set-name ${STACK_NAME} --accounts "[${ACCOUNT}]" --regions ${REGIONS}
 ```
